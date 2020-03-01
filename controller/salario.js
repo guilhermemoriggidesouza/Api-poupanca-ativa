@@ -6,11 +6,6 @@ module.exports = {
     async cadastrarSalario(req, res, app){
         res.send('cadastrar salario')
     },
-
-    async deletarSalario(req, res, app){
-        res.send('deletar salario')
-    },
-
     async modificarSalario(req, res, app){
         res.send('modificar salario')
     },

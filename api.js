@@ -5,10 +5,11 @@ module.exports = function(app){
     })
 
     app.post('/login', (req, res)=>{
+        console.log('entrou na rota')
         app.controller.login.cadastrarLogin(req, res, app)
     })
 
-    app.put('/login:idlogin', (req, res)=>{
+    app.put('/login/:idlogin', (req, res)=>{
         app.controller.login.modificarSenha(req, res, app)
     })
 

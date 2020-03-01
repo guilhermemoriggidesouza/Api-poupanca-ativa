@@ -3,12 +3,18 @@ var Sequelize = require('sequelize')
 
 var login =  DbConfig.define('login', {
     idlogin: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true
     },
-    login: Sequelize.STRING,
-    senha: Sequelize.STRING,
-    nome: Sequelize.INTEGER
+    login: {
+        type : Sequelize.STRING,
+        unique: true
+    },
+    senha: {
+        type : Sequelize.STRING,
+    },
+    nome: Sequelize.STRING
 })
 
 module.exports.login = login
