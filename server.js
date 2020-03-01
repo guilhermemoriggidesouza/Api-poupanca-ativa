@@ -16,6 +16,6 @@ app.use(function(req, res, next){
     next();
 })
 
-consign().include("./models").then("./controller").then('./DAO').then('./api.js').into(app);
+consign().include("./models").then("./controller").then('./DAO').then('./validator.js').then('./api.js').into(app);
 
 module.exports = app;

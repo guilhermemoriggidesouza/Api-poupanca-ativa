@@ -1,8 +1,8 @@
 module.exports = {
     async consultarLoginPeloEmail(app, email){
-       return app.models.login.login.find({
+       return await app.models.login.login.findOne({
             where: {
-                email: email,
+                login: email,
             },
         })
     },

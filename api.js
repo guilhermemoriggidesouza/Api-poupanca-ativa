@@ -1,10 +1,12 @@
+const validator = require('express-joi-validation').createValidator({})
+
 module.exports = function(app){
 
-    app.get('/login', (req, res)=>{
+    app.get('/login', validator.query(app.validator.criarSessaoDoLogin), (req, res)=>{
         app.controller.login.criarSessaoDoLogin(req, res, app)
     })
 
-    app.post('/login', (req, res)=>{
+    app.post('/login', validator.body(app.validator.cadastrarLogin), (req, res)=>{
         console.log('entrou na rota')
         app.controller.login.cadastrarLogin(req, res, app)
     })
