@@ -7,11 +7,14 @@ module.exports = function(app){
     })
 
     app.post('/login', validator.body(app.validator.cadastrarLogin), (req, res)=>{
-        console.log('entrou na rota')
         app.controller.login.cadastrarLogin(req, res, app)
     })
 
-    app.put('/login/:idlogin', (req, res)=>{
+    app.put(
+        '/login/:email',
+        validator.body(app.validator.modificarSenhaBody), 
+        validator.params(app.validator.modificarSenhaParams), 
+        (req, res) => {
         app.controller.login.modificarSenha(req, res, app)
     })
 

@@ -22,15 +22,25 @@ module.exports = {
             senha: hex.textToHex(req.body.senha),
             nome: req.body.nome
         }
-        console.log('entro aqui')
-
-        await app.DAO.loginDAO.inserirLogin(app, registro).then((respDatabase)=>{
-            res.status(200).send({msg: 'login cadastrado', resp: respDatabase})
+        
+        await app.DAO.loginDAO.inserirLogin(app, registro).then((loginInserido)=>{
+            res.status(200).send({msg: 'login cadastrado', resp: loginInserido})
         }).catch((err)=>{
             res.status(404).send({msg: 'erro ao cadastrar login', resp: err})
         })
     },
-    modificarSenha(req, res, app){
-        res.send('esqueci minha senha')
+
+    async modificarSenha(req, res, app){
+        var senha = hex.textToHex(req.body.senha)
+
+        await app.DAO.loginDAO.mudarSenhaPeloEmail(app, req.params.email, senha).then((loginMudado)=>{
+            if(loginMudado[0] >= 1){
+                res.status(200).send({msg: 'senha mudada com sucesso', resp: loginMudado})
+            }else{
+                res.status(404).send({msg: 'nao foi possivel mudar a senha', resp: loginMudado})
+            }
+        }).catch(()=>{
+            res.status(404).send({msg: 'erro ao mudar a senha', resp: loginMudado})
+        })
     }
 }
