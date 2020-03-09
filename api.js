@@ -20,7 +20,7 @@ module.exports = function(app){
 
 
 
-    app.post('/salario', (req, res)=>{
+    app.post('/salario', validator.body(app.validator.cadastrarSalario), (req, res) =>{
         app.controller.salario.cadastrarSalario(req, res, app)
     })
 

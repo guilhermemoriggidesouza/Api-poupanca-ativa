@@ -1,7 +1,6 @@
 const Joi = require('@hapi/joi');
 
 module.exports = {
-
     criarSessaoDoLogin: Joi.object({
         email: Joi.string().required(),
         senha: Joi.string().required()
@@ -18,5 +17,12 @@ module.exports = {
     }),
     modificarSenhaBody:Joi.object({
         senha: Joi.string().required()
+    }),
+
+
+    cadastrarSalario: Joi.object({
+        valor_fixo: Joi.number().required(),
+        valor_resto: Joi.number().required(),
+        idlogin: Joi.number().required()
     })
 }
