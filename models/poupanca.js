@@ -11,6 +11,6 @@ var poupanca = DbConfig.define('poupanca', {
     valor: Sequelize.DOUBLE,
     idsalario: Sequelize.INTEGER
 })
-poupanca.belongsTo(salario, { foreignKey: 'idsalario'})
+poupanca.belongsTo(salario, { foreignKey: 'idsalario', onUpdate: 'CASCADE', onDelete: 'CASCADE',})
 
 module.exports.poupanca = poupanca

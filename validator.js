@@ -24,5 +24,9 @@ module.exports = {
         valor_fixo: Joi.number().required(),
         valor_resto: Joi.number().required(),
         idlogin: Joi.number().required()
-    })
+    }),
+    
+    deletarSalario: Joi.object({
+        idsalario: Joi.number().required()
+    }),
 }

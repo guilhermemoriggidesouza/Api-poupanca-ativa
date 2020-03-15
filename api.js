@@ -28,11 +28,11 @@ module.exports = function(app){
         app.controller.salario.consultarTodosOsSalarios(req, res, app)
     })
 
-    app.delete('/salario:idsalario', (req, res)=>{
+    app.delete('/salario/:idsalario', validator.params(app.validator.deletarSalario), (req, res)=>{
         app.controller.salario.deletarSalario(req, res, app)
     })
     
-    app.put('/salario:idsalario', (req, res)=>{
+    app.put('/salario/:idsalario', (req, res)=>{
         app.controller.salario.modificarSalario(req, res, app)
     })
 
@@ -86,4 +86,9 @@ module.exports = function(app){
         app.controller.movSaida.modificarMovSaida(req, res, app)
     })
 
+
+    //app test
+    app.get('/testeapp', (req, res)=>{
+        app.controller.zerar.insertDados(req, res, app)
+    })
 }

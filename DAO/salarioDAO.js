@@ -30,6 +30,14 @@ module.exports = {
                 idsalario: idsalario
             }
         })
+    },
+
+    async deletarSalarioPeloId(app, idsalario){
+        return await app.models.salario.salario.destroy({
+            where : {
+                idsalario: idsalario
+            }
+        })
     }
 
 }

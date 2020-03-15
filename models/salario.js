@@ -13,6 +13,6 @@ var salario = DbConfig.define('salario', {
     mes: Sequelize.DATE,
     idlogin: Sequelize.INTEGER
 })
-salario.belongsTo(login, { foreignKey: 'idlogin'})
+salario.belongsTo(login, { foreignKey: 'idlogin', onUpdate: 'CASCADE', onDelete: 'CASCADE',})
 
 module.exports.salario = salario
