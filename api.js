@@ -10,8 +10,7 @@ module.exports = function(app){
         app.controller.login.cadastrarLogin(req, res, app)
     })
 
-    app.put(
-        '/login/:email',
+    app.put('/login/:email',
         validator.body(app.validator.modificarSenhaBody), 
         validator.params(app.validator.modificarSenhaParams), 
         (req, res) => {
@@ -32,7 +31,10 @@ module.exports = function(app){
         app.controller.salario.deletarSalario(req, res, app)
     })
     
-    app.put('/salario/:idsalario', (req, res)=>{
+    app.put('/salario/:idsalario',
+        validator.params(app.validator.modificarSalarioParams),
+        validator.body(app.validator.modificarSalarioBody),
+        (req, res)=>{
         app.controller.salario.modificarSalario(req, res, app)
     })
 

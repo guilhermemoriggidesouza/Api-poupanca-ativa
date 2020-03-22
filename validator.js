@@ -23,10 +23,20 @@ module.exports = {
     cadastrarSalario: Joi.object({
         valor_fixo: Joi.number().required(),
         valor_resto: Joi.number().required(),
-        idlogin: Joi.number().required()
+        idlogin: Joi.number().required(),
+        descricao: Joi.string().required()
     }),
     
     deletarSalario: Joi.object({
         idsalario: Joi.number().required()
     }),
+
+    modificarSalarioParams: Joi.object({
+        idsalario: Joi.number().required(),
+    }),
+
+    modificarSalarioBody: Joi.object({
+        valorModificar: Joi.number().required(),
+        descricao: Joi.string().required()
+    })
 }

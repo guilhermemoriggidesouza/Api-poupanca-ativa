@@ -40,10 +40,17 @@ module.exports = {
                 msg += 'novo salario cadastrado';
                 idSalarioInserido = salarioInserido.idsalario
                 respostaDaRota.salario = salarioInserido
+
+                await app.DAO.salarioDAO.registrarManipulacaoSalario(app, {
+                    valor: req.body.valor_fixo,
+                    descricao: req.body.descricao,
+                    idsalario: idSalarioInserido
+                })
     
                 await app.DAO.poupancaDAO.criarPoupanca(app, idSalarioInserido).then((poupancaInserida)=>{
                     msg += ' e poupança criada'
                     respostaDaRota.poupanca = poupancaInserida
+                   
                 }).catch((err)=>{
                     res.status(404).send({msg: 'erro ao criar poupança', resp: err})
                 })
@@ -56,7 +63,26 @@ module.exports = {
     },
 
     async modificarSalario(req, res, app){
-        res.send('modificar salario')
+        const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(app, req.params.idsalario)
+        const newValorResto = parseFloat(salarioRecuperadoId.valor_resto)+ req.body.valorModificar
+        const newValorFixo = parseFloat(salarioRecuperadoId.valor_fixo) + req.body.valorModificar
+
+        await app.DAO.salarioDAO.updateSalario(app, req.params.idsalario, {
+            valor_resto: newValorResto,
+            valor_fixo: newValorFixo
+        }).then(async (resp)=>{
+
+            await app.DAO.salarioDAO.registrarManipulacaoSalario(app, {
+                valor: req.body.valorModificar,
+                descricao: req.body.descricao,
+                idsalario: req.params.idsalario
+            })
+
+            res.status(200).send({msg: 'numero de salarios mudados: ', resp: resp})
+
+        }).catch((err)=>{
+            res.status(404).send({msg: 'erro ao mudar salario', resp: err})
+        })
     },
     
     async criarSessaoDoSalario(req, res, app){
