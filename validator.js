@@ -1,6 +1,10 @@
 const Joi = require('@hapi/joi');
 
 module.exports = {
+    paramsIdSalario: Joi.object({
+        idsalario: Joi.number().required()
+    }),
+
     criarSessaoDoLogin: Joi.object({
         email: Joi.string().required(),
         senha: Joi.string().required()
@@ -15,6 +19,7 @@ module.exports = {
     modificarSenhaParams: Joi.object({
         email: Joi.string().required()
     }),
+
     modificarSenhaBody:Joi.object({
         senha: Joi.string().required()
     }),
@@ -26,17 +31,15 @@ module.exports = {
         idlogin: Joi.number().required(),
         descricao: Joi.string().required()
     }),
-    
-    deletarSalario: Joi.object({
-        idsalario: Joi.number().required()
-    }),
-
-    modificarSalarioParams: Joi.object({
-        idsalario: Joi.number().required(),
-    }),
 
     modificarSalarioBody: Joi.object({
         valorModificar: Joi.number().required(),
         descricao: Joi.string().required()
-    })
+    }),
+
+    modificarPoupancaBody: Joi.object({
+        valorModificar: Joi.number().required(),
+        descricao: Joi.string().required()
+    }),
+
 }

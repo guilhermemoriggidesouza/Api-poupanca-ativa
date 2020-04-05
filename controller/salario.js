@@ -86,6 +86,7 @@ module.exports = {
     },
     
     async criarSessaoDoSalario(req, res, app){
-        res.send('criar sessao do salario')
+        const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(app, req.params.idsalario)
+        res.send(salarioRecuperadoId)
     }
 }

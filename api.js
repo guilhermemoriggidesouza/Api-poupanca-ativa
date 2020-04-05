@@ -27,28 +27,31 @@ module.exports = function(app){
         app.controller.salario.consultarTodosOsSalarios(req, res, app)
     })
 
-    app.delete('/salario/:idsalario', validator.params(app.validator.deletarSalario), (req, res)=>{
+    app.delete('/salario/:idsalario', validator.params(app.validator.paramsIdSalario), (req, res)=>{
         app.controller.salario.deletarSalario(req, res, app)
     })
     
     app.put('/salario/:idsalario',
-        validator.params(app.validator.modificarSalarioParams),
+        validator.params(app.validator.paramsIdSalario),
         validator.body(app.validator.modificarSalarioBody),
         (req, res)=>{
         app.controller.salario.modificarSalario(req, res, app)
     })
 
-    app.get('/session/salario:idsalario', (req, res)=>{
+    app.get('/salario/session/:idsalario', validator.params(app.validator.paramsIdSalario), (req, res)=>{
         app.controller.salario.criarSessaoDoSalario(req, res, app)
     })
 
 
 
-    app.put('/poupanca:idpoupanca', (req, res)=>{
+    app.put('/poupanca/:idsalario', 
+            validator.params(app.validator.paramsIdSalario), 
+            validator.body(app.validator.modificarPoupancaBody), 
+            (req, res)=>{
         app.controller.poupanca.modificarPoupanca(req, res, app)
     })
 
-    app.get('/poupanca:idsalario', (req, res)=>{
+    app.get('/poupanca/:idsalario', (req, res)=>{
         app.controller.poupanca.consultarPoupancaDoSalario(req, res, app)
     })
 

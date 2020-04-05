@@ -1,18 +1,16 @@
 module.exports = {
 
     async modificarPoupanca(req, res, app){
-        res.send('modificar poupanca')
+        const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(app, req.param.idsalario)
+        const poupancaRecuperadaSalarioId = await app.DAO.popancaDAO.consultarPoupancaDoSalario(app, req.param.idsalario)
+        
+        const valorNovoPoupanca = poupancaRecuperadaSalarioId.valor + req.body.valorModificar
+        const valorNovoSalario = salarioRecuperadoId - req.body.valorModificar
+
+        console.log(valorNovoPoupanca, valorNovoSalario, req.body.descricao)
     },
 
-    async cadastrarMetas(req, res, app){
-        res.send('consultar poupanca do salario')
-    },
-
-    async modificarMetas(req, res, app){
-        res.send('consultar poupanca do salario')
-    },
-
-    async deletarMetas(req, res, app){
+    async consultarPoupancaDoSalario(req, res, app){
         res.send('consultar poupanca do salario')
     },
 
