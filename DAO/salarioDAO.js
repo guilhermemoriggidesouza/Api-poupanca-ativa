@@ -1,27 +1,20 @@
 module.exports = {
     async consultarTodosOsSalariosPoupancasElogins(app){
-       return await app.models.poupanca.poupanca.findAll({
-            include:[{
-                model: app.models.salario.salario,
-                include:[{
-                    model: app.models.salario_descricao.salario_descricao
-                },{
-                    model: app.models.login.login
-                }]
-            }]
+       return await app.models.poupanca.findAll({
+            include: app.models.salario
         })
     },
 
     async inserirSalario(app, salario){
-        return await app.models.salario.salario.create(salario)
+        return await app.models.salario.create(salario)
     },
     
     async registrarManipulacaoSalario(app, salario_descricao){
-        return await app.models.salario_descricao.salario_descricao.create(salario_descricao)
+        return await app.models.salario_descricao.create(salario_descricao)
     },
 
     async consultarUltimoSalarioDoUser(app, idlogin){
-        return await app.models.salario.salario.findOne({
+        return await app.models.salario.findOne({
             limit: 1,
             where: {
                 idlogin: idlogin
@@ -31,7 +24,7 @@ module.exports = {
     },
 
     async consultarSalarioPeloId(app, idsalario){
-        return await app.models.salario.salario.findOne({
+        return await app.models.salario.findOne({
             where: { 
                 idsalario: idsalario
             }
@@ -39,7 +32,7 @@ module.exports = {
     },
 
     async updateSalario(app, idsalario, salarioModificado){
-        return await app.models.salario.salario.update(salarioModificado, {
+        return await app.models.salario.update(salarioModificado, {
             where:{
                 idsalario: idsalario
             }
@@ -47,7 +40,7 @@ module.exports = {
     },
 
     async deletarSalarioPeloId(app, idsalario){
-        return await app.models.salario.salario.destroy({
+        return await app.models.salario.destroy({
             where : {
                 idsalario: idsalario
             }

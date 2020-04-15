@@ -1,6 +1,6 @@
 module.exports = {
     async consultarLoginPeloEmail(app, email){
-       return await app.models.login.login.findOne({
+       return await app.models.login.findOne({
             where: {
                 login: email,
             },
@@ -8,11 +8,11 @@ module.exports = {
     },
 
     async inserirLogin(app, registro){
-        return await app.models.login.login.create(registro)
+        return await app.models.login.create(registro)
     },
 
     async mudarSenhaPeloEmail(app, email, senha){
-        return await app.models.login.login.update({senha: senha}, {
+        return await app.models.login.update({senha: senha}, {
             where: {
                 login: email
             }

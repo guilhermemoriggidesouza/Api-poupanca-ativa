@@ -10,6 +10,4 @@ sequelize
     .then(() => console.log('Authenticated'))
     .catch(() => console.log('Error Auth'));
 
-sequelize.sync({force: true})
-
 module.exports = sequelize
