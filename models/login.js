@@ -1,21 +1,23 @@
-var DbConfig = require('../database.js')
-var Sequelize = require('sequelize')
-module.exports = ()=>{
-    var login =  DbConfig.define('login', {
+module.exports = (sequelize, DataTypes)=>{
+    var login =  sequelize.define('login', {
         idlogin: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         login: {
-            type : Sequelize.STRING,
+            type : DataTypes.STRING,
             unique: true
         },
         senha: {
-            type : Sequelize.STRING,
+            type : DataTypes.STRING,
         },
-        nome: Sequelize.STRING
+        nome: DataTypes.STRING
     })
+
+    login.associate = (models)=>{
+        login.hasMany(models.salario, {foreignKey: 'idlogin'})
+    }
     
     return login
 }

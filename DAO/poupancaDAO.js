@@ -1,23 +1,25 @@
+const models = require('../models/') 
+
 module.exports = {
 
-    async criarPoupanca(app, idSalarioInserido){
+    async criarPoupanca(idSalarioInserido){
         const poupanca = {
             valor: 0,
             idsalario: idSalarioInserido
         }
-        return await app.models.poupanca.create(poupanca)
+        return await models.poupanca.create(poupanca)
     },
 
-    async consultarPoupancaPeloIdSalario(app, idSalario){
-        return await app.models.poupanca.findOne({
+    async consultarPoupancaPeloIdSalario(idSalario){
+        return await models.poupanca.findOne({
             where:{
                 idsalario: idSalario
             }
         })
     },
 
-    async mudarValorPoupancaPeloIdSalario(app, valorModificar, idsalario){
-        return await app.models.poupanca.update(valorModificar, {
+    async mudarValorPoupancaPeloIdSalario(valorModificar, idsalario){
+        return await models.poupanca.update(valorModificar, {
             where:{
                 idsalario: idsalario
             }

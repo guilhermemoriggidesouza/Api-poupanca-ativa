@@ -1,16 +1,14 @@
-var DbConfig = require('../database.js')
-var Sequelize = require('sequelize')
-module.exports = ()=>{
-    var metas = DbConfig.define('metas', {
+module.exports = (sequelize, DataTypes) =>{
+    var metas = sequelize.define('metas', {
         idmeta: { 
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true
         },
-        valor: Sequelize.DOUBLE,
-        titulo: Sequelize.STRING,
-        texto: Sequelize.STRING,
-        status: Sequelize.CHAR,
-        idlogin: Sequelize.INTEGER
+        valor: DataTypes.DOUBLE,
+        titulo: DataTypes.STRING,
+        texto: DataTypes.STRING,
+        status: DataTypes.CHAR,
+        idlogin: DataTypes.INTEGER
     })
     
     return metas

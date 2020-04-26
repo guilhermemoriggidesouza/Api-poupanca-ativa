@@ -1,18 +1,20 @@
+const models = require('../models/') 
+
 module.exports = {
-    async consultarLoginPeloEmail(app, email){
-       return await app.models.login.findOne({
+    async consultarLoginPeloEmail(email){
+       return await models.login.findOne({
             where: {
                 login: email,
             },
         })
     },
 
-    async inserirLogin(app, registro){
-        return await app.models.login.create(registro)
+    async inserirLogin(registro){
+        return await models.login.create(registro)
     },
 
-    async mudarSenhaPeloEmail(app, email, senha){
-        return await app.models.login.update({senha: senha}, {
+    async mudarSenhaPeloEmail(email, senha){
+        return await models.login.update({senha: senha}, {
             where: {
                 login: email
             }

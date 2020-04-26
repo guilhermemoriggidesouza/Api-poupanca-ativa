@@ -1,20 +1,27 @@
+const models = require('../models/') 
+
 module.exports = {
-    async consultarTodosOsSalariosPoupancasElogins(app){
-       return await app.models.poupanca.findAll({
-            include: app.models.salario
+    async consultarTodosOsSalariosPoupancasElogins(){
+       return await models.login.findAll({
+            include: {
+                model: models.salario,
+                include: {
+                    model: models.poupanca
+                }
+            }
         })
     },
 
-    async inserirSalario(app, salario){
-        return await app.models.salario.create(salario)
+    async inserirSalario(salario){
+        return await models.salario.create(salario)
     },
     
-    async registrarManipulacaoSalario(app, salario_descricao){
-        return await app.models.salario_descricao.create(salario_descricao)
+    async registrarManipulacaoSalario(salario_descricao){
+        return await models.salario_descricao.create(salario_descricao)
     },
 
-    async consultarUltimoSalarioDoUser(app, idlogin){
-        return await app.models.salario.findOne({
+    async consultarUltimoSalarioDoUser(idlogin){
+        return await models.salario.findOne({
             limit: 1,
             where: {
                 idlogin: idlogin
@@ -23,24 +30,24 @@ module.exports = {
         })
     },
 
-    async consultarSalarioPeloId(app, idsalario){
-        return await app.models.salario.findOne({
+    async consultarSalarioPeloId(idsalario){
+        return await models.salario.findOne({
             where: { 
                 idsalario: idsalario
             }
         })
     },
 
-    async updateSalario(app, idsalario, salarioModificado){
-        return await app.models.salario.update(salarioModificado, {
+    async updateSalario(idsalario, salarioModificado){
+        return await models.salario.update(salarioModificado, {
             where:{
                 idsalario: idsalario
             }
         })
     },
 
-    async deletarSalarioPeloId(app, idsalario){
-        return await app.models.salario.destroy({
+    async deletarSalarioPeloId(idsalario){
+        return await models.salario.destroy({
             where : {
                 idsalario: idsalario
             }

@@ -1,18 +1,17 @@
-var DbConfig = require('../database.js')
-var Sequelize = require('sequelize')
-var salario  = require('./salario')()
-
-module.exports = ()=>{
-    var poupanca = DbConfig.define('poupanca', {
+module.exports = (sequelize, DataTypes)=>{
+    var poupanca = sequelize.define('poupanca', {
         idpoupanca: { 
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        valor: Sequelize.DOUBLE,
-        idsalario: Sequelize.INTEGER
+        valor: DataTypes.DOUBLE,
+        idsalario: DataTypes.INTEGER
     })
-    poupanca.belongsTo(salario, { foreignKey: 'idsalario', onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+    
+    poupanca.associate = (models) =>{
+        poupanca.belongsTo(models.salario, { foreignKey: 'idsalario', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+    }
     
     return poupanca
 }

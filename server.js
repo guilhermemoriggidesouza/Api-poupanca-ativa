@@ -2,12 +2,11 @@ var express = require('express')
 var consign = require('consign')
 var bodyParser = require('body-parser')
 var app = express()
-var sequelizeConfig = require('./database')
+var db = require('./models/index')
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.json());
-
 
 app.use(function(req, res, next){
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -17,19 +16,13 @@ app.use(function(req, res, next){
     next();
 })
 
-consign().include("./models").then("./controller").then('./DAO').then('./validator.js').then('./api.js').into(app);
+consign().then("./controller").then('./DAO').then('./validator.js').then('./api.js').into(app);
 
-sequelizeConfig.transaction(function(t) {
-    var options = { raw: true, transaction: t }
-
-    sequelizeConfig
-        .query('SET FOREIGN_KEY_CHECKS = 0', null, options)
-        .then(function() {
-            sequelizeConfig.sync({force:true})
-        })
-        .then(function() {
-            return sequelizeConfig.query('SET FOREIGN_KEY_CHECKS = 1', null, options)
-        })
+db.sequelize.authenticate().then(()=>{
+    console.log('conectou')
+    db.sequelize.sync({force:true}).then(()=>{
+        console.log('ligou o corno')
+    })
 })
 
 module.exports = app;

@@ -1,21 +1,24 @@
-var DbConfig = require('../database.js')
-var Sequelize = require('sequelize')
-var login = require('./login')()
-var poupanca = require('./poupanca')
-
-module.exports = () =>{
-    var salario = DbConfig.define('salario', {
+module.exports = (sequelize, DataTypes) =>{
+    var salario = sequelize.define('salario', {
         idsalario: { 
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        valor_fixo: Sequelize.DOUBLE,
-        valor_resto: Sequelize.DOUBLE,
-        mes: Sequelize.DATE,
-        idlogin: Sequelize.INTEGER
+        valor_fixo: DataTypes.DOUBLE,
+        valor_resto: DataTypes.DOUBLE,
+        mes: DataTypes.DATE,
+        idlogin: {
+            type: DataTypes.INTEGER,
+        }
     })
-    salario.belongsTo(login, { foreignKey: 'idlogin', onUpdate: 'CASCADE', onDelete: 'CASCADE',})
+
+    salario.associate = (models)=>{
+        salario.belongsTo(models.login, {foreignKey: 'idlogin', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+
+        salario.hasOne(models.poupanca, {foreignKey: 'idsalario'})
+        salario.hasMany(models.salario_descricao, {foreignKey: 'idsalario'})
+    }
 
     return salario
 }

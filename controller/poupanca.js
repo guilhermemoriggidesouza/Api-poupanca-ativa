@@ -1,28 +1,50 @@
 module.exports = {
 
     async modificarPoupanca(req, res, app){
-        // console.log(req.params.idsalario)
-        const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(app, req.params.idsalario)
-        const poupancaRecuperadaSalarioId = await app.DAO.poupancaDAO.consultarPoupancaPeloIdSalario(app, req.params.idsalario)
-        
-        const valorNovoPoupanca = poupancaRecuperadaSalarioId.valor + req.body.valorModificar
-        const valorNovoSalario = salarioRecuperadoId.valor_resto - req.body.valorModificar
+        let valorNovoPoupanca = 0.0
+        let valorNovoSalario = 0.0
+        let salarioRecuperadoId = {}
+        let poupancaRecuperadaSalarioId = {}
 
-        console.log(salarioRecuperadoId.valor_resto)
-        console.log(valorNovoPoupanca, valorNovoSalario, req.body.descricao)
+        try{
+            salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(req.params.idsalario)
+            poupancaRecuperadaSalarioId = await app.DAO.poupancaDAO.consultarPoupancaPeloIdSalario(req.params.idsalario)
 
-        if(valorNovoPoupanca > 0){
-            console.log(req.params.idsalario)
-            await app.DAO.poupancaDAO.mudarValorPoupancaPeloIdSalario(app, {valor: valorNovoPoupanca}, req.params.idsalario).then((result)=>{
-                console.log(result)
-                res.status(200).send(result)
-            }).catch((err)=>{
-                res.status(404).send({msg: 'error ao mudar poupanca', resp:err})
-            })
-
-        }else{
-            res.status(404).send({msg: 'valor informado tira mais que o valor da poupanca neste salario', resp: valorNovoPoupanca})
+            valorNovoPoupanca = poupancaRecuperadaSalarioId.valor + req.body.valorModificar
+            valorNovoSalario = salarioRecuperadoId.valor_resto - req.body.valorModificar
+        }catch(error){
+            res.status(404).send({msg: "não foi possível achar poupanca ou salario", resp: {poupanca: poupancaRecuperadaSalarioId, salario: salarioRecuperadoId}})
+            return
         }
+
+        if(valorNovoSalario < 0){
+            res.status(404).send({msg: "valor tirado do salario excede valor existente", resp: {valorExistente: salarioRecuperadoId.valor_resto, novoValor: valorNovoSalario}})
+            return
+        }
+
+        if(valorNovoPoupanca < 0){
+            res.status(404).send({msg: 'valor informado tira mais que o valor da poupanca neste salario', resp: {valorPoupanca: poupancaRecuperadaSalarioId.valor, valorSubtraido: valorNovoPoupanca}})
+            return
+        }
+
+        await app.DAO.poupancaDAO.mudarValorPoupancaPeloIdSalario({valor: valorNovoPoupanca}, req.params.idsalario).then(async (result)=>{
+            if(result[0] >= 1){
+                console.log(valorNovoSalario, salarioRecuperadoId.valor_resto, req.body.valorModificar)
+                await app.DAO.salarioDAO.updateSalario(req.params.idsalario, {valor_resto: valorNovoSalario}).then((resultSalario)=>{
+                    app.DAO.salarioDAO.registrarManipulacaoSalario({valor: (req.body.valorModificar*-1), descricao: req.body.descricao, idsalario: req.params.idsalario})
+
+                    res.status(200).send({msg: 'valor modificado no salario e modificado na poupanca', resp:resultSalario})
+                }).catch((err)=>{
+                    res.status(404).send({msg: 'error ao mudar o salario', resp:err})
+                })
+            }else{
+                throw {
+                    numberUpdate: result
+                }
+            }
+        }).catch((err)=>{
+            res.status(404).send({msg: 'error ao mudar poupanca', resp:err})
+        })
     },
 
     async consultarPoupancaDoSalario(req, res, app){

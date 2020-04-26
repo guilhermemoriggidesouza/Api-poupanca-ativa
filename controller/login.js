@@ -3,7 +3,7 @@ const hex = require('amrhextotext')
 module.exports = {
     async criarSessaoDoLogin(req, res, app){
         var senha 
-        const data = await app.DAO.loginDAO.consultarLoginPeloEmail(app, req.query.email)
+        const data = await app.DAO.loginDAO.consultarLoginPeloEmail(req.query.email)
         if(data){
             senha = hex.hexToUtf8(data.senha)
             if(senha == req.query.senha){
@@ -23,7 +23,7 @@ module.exports = {
             nome: req.body.nome
         }
         
-        await app.DAO.loginDAO.inserirLogin(app, registro).then((loginInserido)=>{
+        await app.DAO.loginDAO.inserirLogin(registro).then((loginInserido)=>{
             res.status(200).send({msg: 'login cadastrado', resp: loginInserido})
         }).catch((err)=>{
             res.status(404).send({msg: 'erro ao cadastrar login', resp: err})
@@ -33,7 +33,7 @@ module.exports = {
     async modificarSenha(req, res, app){
         var senha = hex.textToHex(req.body.senha)
 
-        await app.DAO.loginDAO.mudarSenhaPeloEmail(app, req.params.email, senha).then((loginMudado)=>{
+        await app.DAO.loginDAO.mudarSenhaPeloEmail(req.params.email, senha).then((loginMudado)=>{
             if(loginMudado[0] >= 1){
                 res.status(200).send({msg: 'senha mudada com sucesso', resp: loginMudado})
             }else{

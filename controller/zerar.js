@@ -16,7 +16,7 @@ module.exports = {
             nome: 'guilherme'
         }
         
-        await app.DAO.loginDAO.inserirLogin(app, registroLogin).then(async (loginInserido)=>{
+        await app.DAO.loginDAO.inserirLogin(registroLogin).then(async (loginInserido)=>{
             
             resp.login = loginInserido
             const salario = {
@@ -26,22 +26,25 @@ module.exports = {
                 idlogin: loginInserido.idlogin
             }
 
-            await app.DAO.salarioDAO.inserirSalario(app, salario)
+            await app.DAO.salarioDAO.inserirSalario(salario)
                 .then(async (salarioInserido)=>{
                     idSalarioInserido = salarioInserido.idsalario
                     resp.salario = salarioInserido
         
-                    await app.DAO.poupancaDAO.criarPoupanca(app, idSalarioInserido).then((poupancaInserida)=>{
+                    await app.DAO.poupancaDAO.criarPoupanca(idSalarioInserido).then((poupancaInserida)=>{
                         resp.poupanca = poupancaInserida
                     }).catch((err)=>{
+                        console.log(err)
                         res.status(404).send({msg: 'erro ao criar poupança', resp: err})
                     })
         
                 }).catch((err)=>{
+                    console.log(err)
                     res.status(404).send({msg: 'erro ao cadastrar salario', resp: err})
                 })
     
         }).catch((err)=>{
+            console.log(err)
             res.status(404).send({msg: 'erro ao cadastrar login', resp: err})
         })
         res.status(200).send(resp)

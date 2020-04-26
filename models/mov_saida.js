@@ -1,16 +1,14 @@
-var DbConfig = require('../database.js')
-var Sequelize = require('sequelize')
-module.exports = ()=>{
-    var mov_saida = DbConfig.define('mov_saida', {
+module.exports = (sequelize, DataTypes)=>{
+    var mov_saida = sequelize.define('mov_saida', {
         idmov_saida: { 
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true
         },
-        valor: Sequelize.DOUBLE,
-        titulo: Sequelize.STRING,
-        texto: Sequelize.STRING,
-        status: Sequelize.CHAR,
-        idsalario: Sequelize.INTEGER
+        valor: DataTypes.DOUBLE,
+        titulo: DataTypes.STRING,
+        texto: DataTypes.STRING,
+        status: DataTypes.CHAR,
+        idsalario: DataTypes.INTEGER
     })
 
     return mov_saida
