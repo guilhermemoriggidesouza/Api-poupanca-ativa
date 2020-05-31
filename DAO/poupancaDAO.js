@@ -2,10 +2,11 @@ const models = require('../models/')
 
 module.exports = {
 
-    async criarPoupanca(idSalarioInserido){
+    async criarPoupanca(idSalarioInserido, idlogin){
         const poupanca = {
             valor: 0,
-            idsalario: idSalarioInserido
+            idsalario: idSalarioInserido,
+            idlogin: idlogin
         }
         return await models.poupanca.create(poupanca)
     },
@@ -24,5 +25,9 @@ module.exports = {
                 idsalario: idsalario
             }
         })
+    },
+
+    async recuperarPoupancasPeloIdSalarioASC(){
+        // 'SELECT * FROM poupanca ORDER BY idpoupanca ASC'
     }
 }

@@ -20,6 +20,10 @@ module.exports = {
         return await models.salario_descricao.create(salario_descricao)
     },
 
+    async criarNovoBackupDeValor(valor_recuperado){
+        return await models.valores_recuperados_salarios.create(valor_recuperado) 
+    },
+
     async consultarUltimoSalarioDoUser(idlogin){
         return await models.salario.findOne({
             limit: 1,
@@ -50,6 +54,22 @@ module.exports = {
         return await models.salario.destroy({
             where : {
                 idsalario: idsalario
+            }
+        })
+    },
+    
+    async recuperarValorBackupPeloidsalario_vai(idsalario){
+        return await models.valores_recuperados_salarios.findOne({
+            where: { 
+                idsalario_vai: idsalario
+            }
+        })
+    },
+
+    async recuperaSalarioPeloidsalario_vem(idsalario){
+        return await models.valores_recuperados_salarios.findOne({
+            where: { 
+                idsalario_vem: idsalario
             }
         })
     }

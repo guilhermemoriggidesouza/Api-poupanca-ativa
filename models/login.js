@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes)=>{
 
     login.associate = (models)=>{
         login.hasMany(models.salario, {foreignKey: 'idlogin'})
+        login.hasMany(models.poupanca, {foreignKey: 'idlogin'})
     }
     
     return login

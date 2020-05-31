@@ -5,16 +5,38 @@ module.exports = {
     },
 
     async deletarSalario(req, res, app){
-        var resp = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
-        res.status(200).send({msg:'Numero de registros deletados', resp: resp})
+        let recuperarValorBackup
+        let deleteSalario
+        let salarioRecuperadoPeloIdsalario_vem = await app.DAO.salarioDAO.recuperaSalarioPeloidsalario_vem(req.params.idsalario)
+
+        if(!salarioRecuperadoPeloIdsalario_vem){
+            try{
+                recuperarValorBackup = await app.DAO.salarioDAO.recuperarValorBackupPeloidsalario_vai(req.params.idsalario)
+                await app.DAO.salarioDAO.updateSalario(recuperarValorBackup.idsalario_vem, { valor_resto: recuperarValorBackup.valor})
+                    .then(async (resp)=>{
+                        deleteSalario = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
+                        res.status(200).send({msg:'Numero de registros deletados', resp: deleteSalario})
+                    }).catch((error)=>{
+                        res.status(404).send({msg: 'Não foi possível atualizar o salario anterior', resp: error})
+                    })
+            }catch{
+                let errorRecupera = recuperarValorBackup ? '':'Não foi possível encontrar o backup do salario anterior'
+                let errorDelete = recuperarValorBackup ? '':'Não foi possível deletar o registro'
+                res.status(404).send({msg: `${errorRecupera} ${errorDelete}`})
+            }
+        }else{
+            res.status(404).send({msg:'Salario precisa ser o ultimo feito para ser excluido', resp: salarioRecuperadoPeloIdsalario_vem})
+        }
     },
 
     async cadastrarSalario(req, res, app){
         const today = new Date();
         let msg = ''
         let idSalarioInserido
+        let idSalarioAnterior
         let respostaDaRota = {salario:{}, poupanca: {}}
         let valorResto = req.body.valor_resto
+        let valorRecuperado = 0.0
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         
         var ultimoSalarioUsuario = await app.DAO.salarioDAO.consultarUltimoSalarioDoUser(req.body.idlogin)
@@ -24,6 +46,8 @@ module.exports = {
             await app.DAO.salarioDAO.updateSalario(ultimoSalarioUsuario.idsalario, { valor_resto: 0 })
                 .then((salarioMudado)=>{
                     msg = `resgatado ${parseInt(ultimoSalarioUsuario.valor_resto)} de bonus do ultimo salario, `
+                    valorRecuperado = ultimoSalarioUsuario.valor_resto
+                    idSalarioAnterior = ultimoSalarioUsuario.idsalario
                 }).catch((err)=>{
                     res.status(404).send({msg: 'erro ao resgatar valor do ultimo salario', resp: err})
                 })
@@ -47,10 +71,15 @@ module.exports = {
                     idsalario: idSalarioInserido
                 })
     
-                await app.DAO.poupancaDAO.criarPoupanca(idSalarioInserido).then((poupancaInserida)=>{
+                await app.DAO.poupancaDAO.criarPoupanca(idSalarioInserido, req.body.idlogin).then(async (poupancaInserida)=>{
                     msg += ' e poupança criada'
                     respostaDaRota.poupanca = poupancaInserida
-                   
+
+                    await app.DAO.salarioDAO.criarNovoBackupDeValor({
+                        valor: valorRecuperado,
+                        idsalario_vai: idSalarioInserido,
+                        idsalario_vem: idSalarioAnterior
+                    })
                 }).catch((err)=>{
                     console.log(err)
                     res.status(404).send({msg: 'erro ao criar poupança', resp: err})

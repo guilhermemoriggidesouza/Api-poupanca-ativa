@@ -1,7 +1,6 @@
 const validator = require('express-joi-validation').createValidator({})
 
 module.exports = function(app){
-
     app.get('/login', validator.query(app.validator.criarSessaoDoLogin), (req, res)=>{
         app.controller.login.criarSessaoDoLogin(req, res, app)
     })

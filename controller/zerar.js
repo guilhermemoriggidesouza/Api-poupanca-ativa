@@ -31,7 +31,7 @@ module.exports = {
                     idSalarioInserido = salarioInserido.idsalario
                     resp.salario = salarioInserido
         
-                    await app.DAO.poupancaDAO.criarPoupanca(idSalarioInserido).then((poupancaInserida)=>{
+                    await app.DAO.poupancaDAO.criarPoupanca(idSalarioInserido, loginInserido.idlogin).then((poupancaInserida)=>{
                         resp.poupanca = poupancaInserida
                     }).catch((err)=>{
                         console.log(err)

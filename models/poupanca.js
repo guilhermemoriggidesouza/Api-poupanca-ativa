@@ -6,11 +6,13 @@ module.exports = (sequelize, DataTypes)=>{
             autoIncrement: true,
         },
         valor: DataTypes.DOUBLE,
-        idsalario: DataTypes.INTEGER
+        idsalario: DataTypes.INTEGER,
+        idlogin: DataTypes.INTEGER
     })
     
     poupanca.associate = (models) =>{
         poupanca.belongsTo(models.salario, { foreignKey: 'idsalario', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+        poupanca.belongsTo(models.login, {foreignKey: 'idlogin', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
     }
     
     return poupanca

@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) =>{
 
         salario.hasOne(models.poupanca, {foreignKey: 'idsalario'})
         salario.hasMany(models.salario_descricao, {foreignKey: 'idsalario'})
+        
+        salario.hasOne(models.valores_recuperados_salarios, {foreignKey: 'idsalario_vai'})
+        salario.hasOne(models.valores_recuperados_salarios, {foreignKey: 'idsalario_vem'})
     }
 
     return salario
