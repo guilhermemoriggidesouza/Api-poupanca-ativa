@@ -1,7 +1,11 @@
 module.exports = {
-    async consultarTodosOsSalarios(req, res, app){
-        var resp = await app.DAO.salarioDAO.consultarTodosOsSalariosPoupancasElogins()
-        res.status(200).send(resp)
+    async consultarTodosOsSalariosPeloLogin(req, res, app){
+        try{
+            var resp = await app.DAO.salarioDAO.consultarSalarioPeloIdLogin(req.params.idlogin)
+            res.status(200).send({msg: "salario recuperado com suceso", resp: resp})
+        }catch(err){
+            res.status(404).send({msg: "erro ao recuperar salarios dos usuarios", resp: err})
+        }
     },
 
     async deletarSalario(req, res, app){
@@ -124,7 +128,11 @@ module.exports = {
     },
     
     async criarSessaoDoSalario(req, res, app){
-        const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(req.params.idsalario)
-        res.send(salarioRecuperadoId)
+        try{
+            const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(req.params.idsalario)
+            res.status(200).send(salarioRecuperadoId)
+        }catch(err){
+            res.status(404).send(salarioRecuperadoId)
+        }
     }
 }

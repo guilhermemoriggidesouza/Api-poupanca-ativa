@@ -4,6 +4,10 @@ module.exports = {
     paramsIdSalario: Joi.object({
         idsalario: Joi.number().required()
     }),
+    
+    paramsIdlogin: Joi.object({
+        idlogin: Joi.number().required()
+    }),
 
     criarSessaoDoLogin: Joi.object({
         email: Joi.string().required(),
@@ -42,4 +46,10 @@ module.exports = {
         descricao: Joi.string().required()
     }),
 
+    cadastrarMeta: Joi.object({
+        valor : Joi.number().required(),
+        titulo : Joi.string().required(),
+        texto : Joi.string().required(),
+        idlogin : Joi.number().required()
+    }),
 }

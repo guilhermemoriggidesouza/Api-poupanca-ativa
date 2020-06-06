@@ -48,7 +48,21 @@ module.exports = {
     },
 
     async consultarPoupancaDoSalario(req, res, app){
-        res.send('consultar poupanca do salario')
+        try{
+            poupancaRecuperadaSalarioId = await app.DAO.poupancaDAO.consultarPoupancaPeloIdSalario(req.params.idsalario)
+            res.status(200).send({msg: "poupanca recuperada com sucesso", resp: poupancaRecuperadaSalarioId})
+        }catch(err){
+            res.status(404).send({msg:"erro ao recuperar poupanca", resp: err})
+        }
     },
+
+    async consultarPoupancaPeloLogin(req, res, app){
+        try{
+            poupancaRecuperadaSalarioId = await app.DAO.poupancaDAO.consultarPoupancaPeloIdLogin(req.params.idlogin)
+            res.status(200).send({msg: "poupanca recuperada com sucesso", resp: poupancaRecuperadaSalarioId})
+        }catch{
+            res.status(404).send({msg:"erro ao recuperar poupanca", resp: err})
+        }
+    }
 
 }

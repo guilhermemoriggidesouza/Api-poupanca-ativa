@@ -1,10 +1,27 @@
 module.exports = {
     async consultarMetas(req, res, app){
-        res.send('consultar todos os salarios')
+        try{
+            let resp = await app.DAO.metasDAO.consultarMetaPeloLogin(req.params.idlogin)
+            res.status(200).send({msg: "Metas consultadas com sucesso", resp: resp})
+        }catch(err){
+            res.status(404).send({msg: "Erro ao cadastrar a meta", resp: resp})
+        }
     },
 
     async cadastrarMetas(req, res, app){
-        res.send('cadastrar salario')
+        await app.DAO.metasDAO.cadastrarMeta({
+            valor: req.body.valor,
+            titulo: req.body.titulo,
+            texto: req.body.texto,
+            status: "c",
+            idlogin: req.body.idlogin,
+        })
+        .then((result)=>{
+            res.status(200).send({msg: "Meta cadastrada com sucesso", resp: result})
+        })
+        .catch((err)=>{
+            res.status(404).send({msg: "Erro ao cadastrar a meta", resp: err})
+        })
     },
 
     async modificarMetas(req, res, app){

@@ -18,6 +18,14 @@ module.exports = {
             }
         })
     },
+    
+    async consultarPoupancaPeloIdLogin(idlogin){
+        return await models.poupanca.findAll({
+            where:{
+                idlogin: idlogin
+            }
+        })
+    },
 
     async mudarValorPoupancaPeloIdSalario(valorModificar, idsalario){
         return await models.poupanca.update(valorModificar, {
