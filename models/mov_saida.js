@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes)=>{
     var mov_saida = sequelize.define('mov_saida', {
         idmov_saida: { 
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         valor: DataTypes.DOUBLE,
         titulo: DataTypes.STRING,

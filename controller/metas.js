@@ -13,7 +13,7 @@ module.exports = {
             valor: req.body.valor,
             titulo: req.body.titulo,
             texto: req.body.texto,
-            status: "c",
+            status: "p",
             idlogin: req.body.idlogin,
         })
         .then((result)=>{
@@ -61,6 +61,11 @@ module.exports = {
     },
 
     async deletarMetas(req, res, app){
-        res.send('modificar salario')
+        try{
+            var deleteMeta = await app.DAO.metasDAO.deletarMetasPeloIdMeta(req.params.idmeta) 
+            res.status(200).send({msg:'Numero de registros deletados', resp: deleteMeta})
+        }catch(err){
+            res.status(200).send({msg:'Erro ao deletar registro', resp: err})
+        }
     }
 }

@@ -8,6 +8,14 @@ module.exports = {
     paramsIdlogin: Joi.object({
         idlogin: Joi.number().required()
     }),
+    
+    paramsIdMeta: Joi.object({
+        idmeta: Joi.number().required()
+    }),
+
+    paramsIdMovSaida: Joi.object({
+        idmovsaida: Joi.number().required()
+    }),
 
     criarSessaoDoLogin: Joi.object({
         email: Joi.string().required(),
@@ -51,5 +59,11 @@ module.exports = {
         titulo : Joi.string().required(),
         texto : Joi.string().required(),
         idlogin : Joi.number().required()
+    }),
+
+    cadastrarMovSaida: Joi.object({
+        titulo : Joi.string().required(),
+        texto : Joi.string().required(),
+        idsalario : Joi.number().required()
     }),
 }

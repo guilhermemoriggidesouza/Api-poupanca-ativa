@@ -11,5 +11,13 @@ module.exports = {
                 idlogin : idlogin
             }
         })
+    },
+
+    async deletarMetasPeloIdMeta(idmeta){
+        return await models.metas.destroy({
+            where : {
+                idmeta: idmeta
+            }
+        })
     }
 }

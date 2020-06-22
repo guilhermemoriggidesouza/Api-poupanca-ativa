@@ -95,29 +95,33 @@ module.exports = function(app){
     )
 
     app.delete(
-        '/metas:idmetas', 
-        (req, res) => app.controlller.metas.deletarMetas(req, res, app)
+        '/metas/:idmeta', 
+        validator.params(app.validator.paramsIdMeta),
+        (req, res) => app.controller.metas.deletarMetas(req, res, app)
     )
 
 
 
     app.get(
-        '/movSaida', 
+        '/movSaida/:idlogin',
+        validator.params(app.validator.paramsIdlogin),
         (req, res) => app.controller.movSaida.consultarMovSaida(req, res, app)
     )
 
     app.post(
         '/movSaida', 
+        validator.body(app.validator.cadastrarMovSaida),
         (req, res) => app.controller.movSaida.cadastrarMovSaida(req, res, app)
     )
 
     app.delete(
-        '/movSaida:idmovSaida', 
-        (req, res) => app.controlller.movSaida.deletarMovSaida(req, res, app)
+        '/movSaida/:idmovsaida', 
+        validator.params(app.validator.paramsIdMovSaida),
+        (req, res) => app.controller.movSaida.deletarMovSaida(req, res, app)
     )
 
     app.put(
-        '/movSaida:idmovSaida', 
+        '/movSaida/:idmovsaida', 
         (req, res) => app.controller.movSaida.modificarMovSaida(req, res, app)
     )
 
