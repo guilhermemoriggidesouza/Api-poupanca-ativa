@@ -35,7 +35,7 @@ module.exports = {
     },
 
     async consultarSalarioPeloId(idsalario){
-        return await models.salario.findAll({
+        return await models.salario.findOne({
             where: { 
                 idsalario: idsalario
             }

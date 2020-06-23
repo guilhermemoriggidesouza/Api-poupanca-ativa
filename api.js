@@ -90,7 +90,9 @@ module.exports = function(app){
     )
 
     app.put(
-        '/metas:idmetas', 
+        '/metas/:idmetas', 
+        validator.params(app.validator.paramsIdMeta),
+        validator.body(app.validator.modificarMetasBody),
         (req, res) => app.controller.metas.modificarMetas(req, res, app)
     )
 

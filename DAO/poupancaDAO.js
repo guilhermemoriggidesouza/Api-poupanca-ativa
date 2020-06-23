@@ -1,4 +1,6 @@
-const models = require('../models/') 
+const models = require('../models/')
+const { Op } = require("sequelize");
+
 
 module.exports = {
 
@@ -36,6 +38,37 @@ module.exports = {
     },
 
     async recuperarPoupancasPeloIdSalarioASC(){
-        // 'SELECT * FROM poupanca ORDER BY idpoupanca ASC'
+        return await models.poupanca.findAll({
+            order: [
+                ['idpoupanca', 'ASC'],
+            ],
+        })
+    },
+
+    async mudarValorMenoresQueIdPoupancaEPeloIdLogin(valorModificar, idpoupanca, idlogin){
+        return await models.poupanca.update(valorModificar, {
+            where:{
+                [Op.and]: [
+                    {
+                        idpoupanca: {
+                            [Op.lte] : idpoupanca,
+                        }
+                    },
+                    {
+                        idlogin: idlogin
+                    }
+                ]
+            },
+            limit : 1
+        })
+    },
+
+    async mudarValorPoupancaPeloIdPoupanca(valorModificar, idpoupanca){
+        return await models.poupanca.update(valorModificar, {
+            where: {
+                idpoupanca: idpoupanca
+            }
+        })
     }
+
 }

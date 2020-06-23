@@ -17,7 +17,7 @@ module.exports = {
             return
         }
 
-        if(valorNovoSalario < 0){
+        if(valorNovoSalario < 0 || salarioRecuperadoId.valor_resto == 0){
             res.status(404).send({msg: "valor tirado do salario excede valor existente", resp: {valorExistente: salarioRecuperadoId.valor_resto, novoValor: valorNovoSalario}})
             return
         }

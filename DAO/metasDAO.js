@@ -19,5 +19,14 @@ module.exports = {
                 idmeta: idmeta
             }
         })
+    },
+
+    async mudarMetasPeloIdmeta(valorMudado, idmeta){
+        return await models.metas.update(valorMudado, {
+            where:{
+                idmeta: idmeta
+            },
+            limit: 1
+        })
     }
 }
