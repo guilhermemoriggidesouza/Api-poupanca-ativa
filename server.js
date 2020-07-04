@@ -19,7 +19,7 @@ consign().then("./controller").then('./DAO').then('./validator.js').then('./api.
 
 db.sequelize.authenticate().then(()=>{
     console.log('conectou')
-    db.sequelize.sync({force:true}).then(()=>{
+    db.sequelize.sync().then(()=>{
         console.log('ligou o corno')
     })
 })
