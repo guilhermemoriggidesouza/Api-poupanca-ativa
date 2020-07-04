@@ -7,7 +7,7 @@ module.exports = {
         if(data){
             senha = hex.hexToUtf8(data.senha)
             if(senha == req.query.senha){
-                res.status(200).send({msg: 'senha encontrada', resp: {data}})
+                res.status(200).send({msg: 'senha encontrada', resp: data})
             }else{
                 res.status(404).send({msg: 'senha não encontrada'})
             }
