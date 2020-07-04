@@ -28,21 +28,27 @@ module.exports = {
         let poupancasEmOrdem;
         try{
             poupancasEmOrdem = await app.DAO.poupancaDAO.recuperarPoupancasPeloIdSalarioASC()
-            let conta = [-1*req.body.valor];
+            metaRecuperadaPeloId = await app.DAO.metasDAO.consultarMetaPeloIdMeta(req.params.idmeta)
+            let conta = [-1*metaRecuperadaPeloId.valor];
             let index;
-            for(i=0;i < results.length; i++){
+            for(i=0;i < poupancasEmOrdem.length; i++){
                 if(Math.sign(conta[i]) === 1){
                     //conta.push(parseInt(results[i].valor+conta[i]));
                     break;
                 }
-                conta.push(parseInt(results[i].valor+conta[i]));              
+                conta.push(parseInt(poupancasEmOrdem[i].valor+conta[i]));    
             }
             index = conta.length-2;
+
+            if(conta[conta.length-1] < 0){
+                res.status(404).send({msg: "você não tem o valor na poupança necessário", resp: {valorFaltando: conta[conta.length-1]}})
+                return
+            }
             
             await app.DAO.poupancaDAO.mudarValorPoupancaPeloIdPoupanca({valor: conta[conta.length-1]}, poupancasEmOrdem[index].idpoupanca)
             .then(async (result)=>{
                 
-                await app.DAO.poupancaDAO.mudarValorMenoresQueIdPoupancaEPeloIdLogin({valor: 0}, poupancasEmOrdem[index].idpoupanca, req.body.idlogin)
+                await app.DAO.poupancaDAO.mudarValorMenoresQueIdPoupancaEPeloIdLogin({valor: 0}, poupancasEmOrdem[index].idpoupanca, poupancasEmOrdem[index].idlogin)
                 .then(async () => {
                     await app.DAO.metasDAO.mudarMetasPeloIdmeta({status: "c"}, req.params.idmeta)
                     .then(async (result) => res.status(200).send({msg: "Meta mudada com sucesso", resp: result}))
@@ -51,7 +57,7 @@ module.exports = {
                 .catch(() => res.status(404).send({msg: "Erro ao mudar poupancas utilizadas", resp: err}))
 
             })
-            .catch((err) => res.status(404).send({msg: "Erro ao mudar a ultima poupanca sobrando", resp: err}))
+            .catch((err) => res.status(404).send({msg: "Erro ao mudar a ultima poupanca", resp: err}))
             
         }catch(err){
             res.status(404).send({msg: "Erro ao mudar meta ", resp: err})

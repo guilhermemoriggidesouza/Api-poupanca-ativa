@@ -13,6 +13,14 @@ module.exports = {
         })
     },
 
+    async consultarMetaPeloIdMeta(idmeta){
+        return await models.metas.findOne({
+            where: {
+                idmeta : idmeta
+            }
+        })
+    },
+
     async deletarMetasPeloIdMeta(idmeta){
         return await models.metas.destroy({
             where : {

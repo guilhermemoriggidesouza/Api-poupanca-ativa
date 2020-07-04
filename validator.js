@@ -53,11 +53,6 @@ module.exports = {
         valorModificar: Joi.number().required(),
         descricao: Joi.string().required()
     }),
-    
-    modificarMetasBody: Joi.object({
-        valorModificar: Joi.number().required(),
-        idlogin: Joi.number().required()
-    }),
 
     cadastrarMeta: Joi.object({
         valor : Joi.number().required(),
