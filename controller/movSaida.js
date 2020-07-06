@@ -1,10 +1,10 @@
 module.exports = {
     async consultarMovSaida(req, res, app){
         try{
-            let resp = await app.DAO.movSaidaDAO.consultarMovSaidaPeloLogin(req.params.idlogin)
+            let resp = await app.DAO.movSaidaDAO.consultarMovSaidaPeloIdMovSaida(req.params.idmovsaida)
             res.status(200).send({msg: "Movimento de saída consultadas com sucesso", resp: resp})
         }catch(err){
-            res.status(404).send({msg: "Erro ao consultar movimentos de saída", resp: resp})
+            res.status(404).send({msg: "Erro ao consultar movimentos de saída", resp: err})
         }
     },
 
@@ -30,6 +30,38 @@ module.exports = {
     },
 
     async modificarMovSaida(req, res, app){
-        res.send('criar sessao do salario')
+        let newValorResto = 0.0
+        let salarioRecuperadoId = {}
+        let movSaidaRecuperadoPorId = {}
+        try{
+            movSaidaRecuperadoPorId = await app.DAO.movSaidaDAO.consultarMovSaidaPeloIdMovSaida(req.params.idmovsaida)
+            salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(movSaidaRecuperadoPorId.idsalario)
+
+            newValorResto = salarioRecuperadoId.valor_resto - req.body.valorModificar
+        }catch(err){
+            res.status(404).send({msg: "não foi possível achar MovSaida ou salario", resp: {id_movsaida: req.params.idmovsaida}})
+            return
+        }
+
+        if(newValorResto < 0){
+            res.status(404).send({msg: 'valor de movimento saida excede valor do salario sobrando', resp:{valoSalario: salarioRecuperadoId.valor_resto, valorMovSaida: req.body.valorModificar}})
+            return
+        }
+
+        await app.DAO.salarioDAO.updateSalario(movSaidaRecuperadoPorId.idsalario, {
+            valor_resto: newValorResto,
+        })
+        .then(async()=> {
+            app.DAO.salarioDAO.registrarManipulacaoSalario({
+                valor: req.body.valorModificar*-1,
+                descricao: 'retirado salario por movimentação de saida ',
+                idsalario: movSaidaRecuperadoPorId.idsalario
+            })
+
+            await app.DAO.movSaidaDAO.modificarMovSaidaPeloIdMovSaida(req.params.idmovsaida, {valor:req.body.valorModificar, status: 'c'})
+                .then((valorModificado) => res.status(200).send({msg: 'Movimento concluido com sucesso', resp:valorModificado}))
+                .catch((error) => res.status(200).send({msg: 'erro ao tentar concluir movimento', resp: error}))
+        })
+        .catch((err)=>res.status(404).send({msg: 'erro ao modificar salario', resp: err}))
     }
 }

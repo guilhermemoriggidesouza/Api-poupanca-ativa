@@ -41,17 +41,18 @@ module.exports = {
         valor_fixo: Joi.number().required(),
         valor_resto: Joi.number().required(),
         idlogin: Joi.number().required(),
-        descricao: Joi.string().required()
     }),
 
     modificarSalarioBody: Joi.object({
         valorModificar: Joi.number().required(),
-        descricao: Joi.string().required()
     }),
 
     modificarPoupancaBody: Joi.object({
         valorModificar: Joi.number().required(),
-        descricao: Joi.string().required()
+    }),
+    
+    modificarMovSaida: Joi.object({
+        valorModificar: Joi.number().required(),
     }),
 
     cadastrarMeta: Joi.object({
@@ -66,4 +67,5 @@ module.exports = {
         texto : Joi.string().required(),
         idsalario : Joi.number().required()
     }),
+    
 }

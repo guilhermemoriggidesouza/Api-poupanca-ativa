@@ -26,12 +26,16 @@ module.exports = {
             res.status(404).send({msg: 'valor informado tira mais que o valor da poupanca neste salario', resp: {valorPoupanca: poupancaRecuperadaSalarioId.valor, valorSubtraido: valorNovoPoupanca}})
             return
         }
-
+        let descricao = req.body.valorModificar > 0 ? 'retirado do salario para poupanca' : 'adicionado do salario para a poupanca'
         await app.DAO.poupancaDAO.mudarValorPoupancaPeloIdSalario({valor: valorNovoPoupanca}, req.params.idsalario).then(async (result)=>{
             if(result[0] >= 1){
                 console.log(valorNovoSalario, salarioRecuperadoId.valor_resto, req.body.valorModificar)
                 await app.DAO.salarioDAO.updateSalario(req.params.idsalario, {valor_resto: valorNovoSalario}).then((resultSalario)=>{
-                    app.DAO.salarioDAO.registrarManipulacaoSalario({valor: (req.body.valorModificar*-1), descricao: req.body.descricao, idsalario: req.params.idsalario})
+                    app.DAO.salarioDAO.registrarManipulacaoSalario({
+                        valor: (req.body.valorModificar*-1), 
+                        descricao: descricao, 
+                        idsalario: req.params.idsalario
+                    })
 
                     res.status(200).send({msg: 'valor modificado no salario e modificado na poupanca', resp:resultSalario})
                 }).catch((err)=>{

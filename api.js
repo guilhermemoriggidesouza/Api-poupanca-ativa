@@ -104,8 +104,8 @@ module.exports = function(app){
 
 
     app.get(
-        '/movSaida/:idlogin',
-        validator.params(app.validator.paramsIdlogin),
+        '/movSaida/:idmovsaida',
+        validator.params(app.validator.paramsIdMovSaida),
         (req, res) => app.controller.movSaida.consultarMovSaida(req, res, app)
     )
 
@@ -123,6 +123,8 @@ module.exports = function(app){
 
     app.put(
         '/movSaida/:idmovsaida', 
+        validator.params(app.validator.paramsIdMovSaida),
+        validator.body(app.validator.modificarMovSaida),
         (req, res) => app.controller.movSaida.modificarMovSaida(req, res, app)
     )
 

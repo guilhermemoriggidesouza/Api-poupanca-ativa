@@ -71,7 +71,7 @@ module.exports = {
 
                 await app.DAO.salarioDAO.registrarManipulacaoSalario({
                     valor: req.body.valor_fixo,
-                    descricao: req.body.descricao,
+                    descricao: 'adicionado novo salario',
                     idsalario: idSalarioInserido
                 })
     
@@ -109,6 +109,12 @@ module.exports = {
             res.status(404).send({msg: "salario não achado", resp: {idsalario: req.params.idsalario}})
         }
 
+        if(newValorFixo < 0 || newValorFixo < 0){
+            res.status(404).send({msg: "erro, valor de sobra ou valor fixo menor que zero", resp: {valor_resto: newValorResto, valor_fixo: newValorFixo}})
+        }
+
+        let descricao = req.body.valorModificar < 0 ? 'retirado do salario' : 'somado ao salario'
+
         await app.DAO.salarioDAO.updateSalario(req.params.idsalario, {
             valor_resto: newValorResto,
             valor_fixo: newValorFixo
@@ -116,7 +122,7 @@ module.exports = {
 
             app.DAO.salarioDAO.registrarManipulacaoSalario({
                 valor: req.body.valorModificar,
-                descricao: req.body.descricao,
+                descricao: descricao,
                 idsalario: req.params.idsalario
             })
 
