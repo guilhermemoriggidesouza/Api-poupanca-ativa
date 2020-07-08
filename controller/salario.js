@@ -111,6 +111,7 @@ module.exports = {
 
         if(newValorFixo < 0 || newValorFixo < 0){
             res.status(404).send({msg: "erro, valor de sobra ou valor fixo menor que zero", resp: {valor_resto: newValorResto, valor_fixo: newValorFixo}})
+            return
         }
 
         let descricao = req.body.valorModificar < 0 ? 'retirado do salario' : 'somado ao salario'
