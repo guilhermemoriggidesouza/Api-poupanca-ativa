@@ -16,16 +16,20 @@ module.exports = {
         if(!salarioRecuperadoPeloIdsalario_vem){
             try{
                 recuperarValorBackup = await app.DAO.salarioDAO.recuperarValorBackupPeloidsalario_vai(req.params.idsalario)
-                await app.DAO.salarioDAO.updateSalario(recuperarValorBackup.idsalario_vem, { valor_resto: recuperarValorBackup.valor})
-                    .then(async (resp)=>{
-                        deleteSalario = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
-                        res.status(200).send({msg:'Numero de registros deletados', resp: deleteSalario})
-                    }).catch((error)=>{
-                        res.status(404).send({msg: 'Não foi possível atualizar o salario anterior', resp: error})
-                    })
+                if(!recuperarValorBackup){
+                    deleteSalario = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
+                }else{
+                    await app.DAO.salarioDAO.updateSalario(recuperarValorBackup.idsalario_vem, { valor_resto: recuperarValorBackup.valor})
+                        .then(async (resp)=>{
+                            deleteSalario = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
+                            res.status(200).send({msg:'Numero de registros deletados', resp: deleteSalario})
+                        }).catch((error)=>{
+                            res.status(404).send({msg: 'Não foi possível atualizar o salario anterior', resp: error})
+                        })
+                }
             }catch{
                 let errorRecupera = recuperarValorBackup ? '':'Não foi possível encontrar o backup do salario anterior'
-                let errorDelete = recuperarValorBackup ? '':'Não foi possível deletar o registro'
+                let errorDelete = deleteSalario ? '':'Não foi possível deletar o registro'
                 res.status(404).send({msg: `${errorRecupera} ${errorDelete}`})
             }
         }else{
