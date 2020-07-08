@@ -18,6 +18,7 @@ module.exports = {
                 recuperarValorBackup = await app.DAO.salarioDAO.recuperarValorBackupPeloidsalario_vai(req.params.idsalario)
                 if(!recuperarValorBackup){
                     deleteSalario = await app.DAO.salarioDAO.deletarSalarioPeloId(req.params.idsalario)
+                    res.status(200).send({msg:'Numero de registros deletados', resp: deleteSalario})
                 }else{
                     await app.DAO.salarioDAO.updateSalario(recuperarValorBackup.idsalario_vem, { valor_resto: recuperarValorBackup.valor})
                         .then(async (resp)=>{
