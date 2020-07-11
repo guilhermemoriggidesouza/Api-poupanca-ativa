@@ -16,7 +16,7 @@ if (process.env.DATABASE_URL) {
     dialectOptions: {
       ssl:{
         rejectUnhauthorized : false,
-        ssl: true
+        require: true
       }
     }
   });
