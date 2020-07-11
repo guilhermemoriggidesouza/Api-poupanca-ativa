@@ -5,8 +5,7 @@
     "database": "sql10352261",
     "host": "sql10.freemysqlhosting.net",
     "dialect": "mysql",
-    "operatorsAliases": 0,
-    "use_env_variable": "DATABASE_URL"
+    "operatorsAliases": 0
   },
   "test": {
     "username": "root",
@@ -14,8 +13,7 @@
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false,
-    "use_env_variable": "DATABASE_URL"
+    "operatorsAliases": false
   },
   "production": {
     "username": "sql10352261",
@@ -23,7 +21,7 @@
     "database": "sql10352261",
     "host": "sql10.freemysqlhosting.net",
     "dialect": "mysql",
-    "operatorsAliases": false,
-    "use_env_variable": "DATABASE_URL"
-  }
+    "operatorsAliases": false
+  },
+  "use_env_variable": "postgres://wloibpekdtffuw:9762fbdda2eb12a45818c057b17e5a599624aff779f2dc9dfddf0cc1de360799@ec2-54-234-44-238.compute-1.amazonaws.com:5432/deq6jt31vujdqu"
 }

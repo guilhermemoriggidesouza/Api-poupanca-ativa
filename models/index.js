@@ -5,20 +5,22 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require(__dirname + '/../config/config.json');
 const db = {};
 
 let sequelize;
-if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
-  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
-    dialect:  'postgres',
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
     protocol: 'postgres',
-    port:     match[4],
-    host:     match[3],
-    logging:  true //false
+    dialectOptions: {
+        ssl: true
+    }
   });
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize("postgres://root:@localhost:  54532/opa", {
+    dialect: "postgres"
+  });
 }
 
 fs
