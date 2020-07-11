@@ -11,14 +11,14 @@ const db = {};
 let sequelize;
 if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
     protocol: 'postgres',
+    dialect: "postgres",
     dialectOptions: {
-      ssl:{
-        rejectUnhauthorized : false,
-        require: true
+      ssl: {
+        require: true,
+        rejectUnauthorized: false // <<<<<<< YOU NEED THIS
       }
-    }
+    },
   });
 } else {
   sequelize = new Sequelize("postgres://root:@localhost:  54532/opa", {
