@@ -41,7 +41,7 @@ module.exports = {
                 valorTotalPoupanca += poupancasEmOrdem[i].valor
             }
             index = conta.length-2;
-
+            console.log("AAAAAAAAAAAAAAAAAAAA", metaRecuperadaPeloId.valor, valorTotalPoupanca)
             if(metaRecuperadaPeloId.valor > valorTotalPoupanca){
                 res.status(404).send({msg: "você não tem o valor na poupança necessário", resp: {valorFaltando: conta[conta.length-1]}})
                 return
