@@ -31,16 +31,18 @@ module.exports = {
             metaRecuperadaPeloId = await app.DAO.metasDAO.consultarMetaPeloIdMeta(req.params.idmeta)
             let conta = [-1*metaRecuperadaPeloId.valor];
             let index;
+            let valorTotalPoupanca = 0.0
             for(i=0;i < poupancasEmOrdem.length; i++){
                 if(Math.sign(conta[i]) === 1){
                     //conta.push(parseInt(results[i].valor+conta[i]));
                     break;
                 }
                 conta.push(parseInt(poupancasEmOrdem[i].valor+conta[i]));    
+                valorTotalPoupanca += poupancasEmOrdem[i].valor
             }
             index = conta.length-2;
 
-            if(conta[conta.length-1] < 0){
+            if(metaRecuperadaPeloId.valor > valorTotalPoupanca){
                 res.status(404).send({msg: "você não tem o valor na poupança necessário", resp: {valorFaltando: conta[conta.length-1]}})
                 return
             }
