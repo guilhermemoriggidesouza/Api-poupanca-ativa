@@ -27,8 +27,8 @@ module.exports = {
     async modificarMetas(req, res, app){
         let poupancasEmOrdem;
         try{
-            poupancasEmOrdem = await app.DAO.poupancaDAO.recuperarPoupancasPeloIdSalarioASC()
             metaRecuperadaPeloId = await app.DAO.metasDAO.consultarMetaPeloIdMeta(req.params.idmeta)
+            poupancasEmOrdem = await app.DAO.poupancaDAO.recuperarPoupancasPeloIdLogiASC(metaRecuperadaPeloId.idlogin)
             let conta = [-1*metaRecuperadaPeloId.valor];
             let index;
             let valorTotalPoupanca = 0.0

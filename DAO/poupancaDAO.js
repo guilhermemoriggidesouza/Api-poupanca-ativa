@@ -37,8 +37,11 @@ module.exports = {
         })
     },
 
-    async recuperarPoupancasPeloIdSalarioASC(){
+    async recuperarPoupancasPeloIdLogiASC(idlogin){
         return await models.poupanca.findAll({
+            where: {
+                idlogin : idlogin
+            },
             order: [
                 ['idpoupanca', 'ASC'],
             ],
