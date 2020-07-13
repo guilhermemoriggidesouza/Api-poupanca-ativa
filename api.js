@@ -104,8 +104,8 @@ module.exports = function(app){
 
 
     app.get(
-        '/movSaida/:idmovsaida',
-        validator.params(app.validator.paramsIdMovSaida),
+        '/movSaida/:idsalario',
+        validator.params(app.validator.paramsIdSalario),
         (req, res) => app.controller.movSaida.consultarMovSaida(req, res, app)
     )
 
