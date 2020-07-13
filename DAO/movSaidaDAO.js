@@ -13,6 +13,14 @@ module.exports = {
         })
     },
 
+    async consultarMovSaidaPeloIdMovSaida(idmov_saida){
+        return await models.mov_saida.findOne({
+            where: {
+                idmov_saida : idmov_saida
+            }
+        })
+    },
+
     async deletarMovSaidaPeloIdMovSaida(idmov_saida){
         return await models.mov_saida.destroy({
             where : {

@@ -39,7 +39,6 @@ module.exports = {
 
             newValorResto = salarioRecuperadoId.valor_resto - req.body.valorModificar
         }catch(err){
-            console.log(movSaidaRecuperadoPorId, req.params.idmovsaida, salarioRecuperadoId, movSaidaRecuperadoPorId.idsalario)
             res.status(404).send({msg: "não foi possível achar MovSaida ou salario", resp: {id_movsaida: req.params.idmovsaida}})
             return
         }
