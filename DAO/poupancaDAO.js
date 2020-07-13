@@ -54,7 +54,7 @@ module.exports = {
                 [Op.and]: [
                     {
                         idpoupanca: {
-                            [Op.lte] : idpoupanca,
+                            [Op.lt] : idpoupanca,
                         }
                     },
                     {
