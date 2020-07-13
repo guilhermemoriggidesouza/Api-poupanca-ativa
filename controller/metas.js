@@ -41,7 +41,6 @@ module.exports = {
                 valorTotalPoupanca += poupancasEmOrdem[i].valor
             }
             index = conta.length-2;
-            console.log("AAAAAAAAAAAAAAAAAAAA", metaRecuperadaPeloId.valor, valorTotalPoupanca)
             if(metaRecuperadaPeloId.valor > valorTotalPoupanca){
                 res.status(404).send({msg: "você não tem o valor na poupança necessário", resp: {valorFaltando: conta[conta.length-1]}})
                 return
@@ -49,7 +48,7 @@ module.exports = {
             
             await app.DAO.poupancaDAO.mudarValorPoupancaPeloIdPoupanca({valor: conta[conta.length-1]}, poupancasEmOrdem[index].idpoupanca)
             .then(async (result)=>{
-                
+                console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", conta);
                 await app.DAO.poupancaDAO.mudarValorMenoresQueIdPoupancaEPeloIdLogin({valor: 0}, poupancasEmOrdem[index].idpoupanca, poupancasEmOrdem[index].idlogin)
                 .then(async () => {
                     await app.DAO.metasDAO.mudarMetasPeloIdmeta({status: "c"}, req.params.idmeta)
