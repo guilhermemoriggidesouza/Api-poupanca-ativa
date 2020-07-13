@@ -5,10 +5,10 @@ module.exports = {
         return await models.mov_saida.create(mov_saida)
     },
 
-    async consultarMovSaidaPeloIdMovSaida(idmov_saida){
-        return await models.mov_saida.findOne({
+    async consultarMovSaidaPeloIdSalario(idsalario){
+        return await models.mov_saida.findAll({
             where: {
-                idmov_saida : idmov_saida
+                idsalario : idsalario
             }
         })
     },

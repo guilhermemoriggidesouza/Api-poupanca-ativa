@@ -1,7 +1,7 @@
 module.exports = {
     async consultarMovSaida(req, res, app){
         try{
-            let resp = await app.DAO.movSaidaDAO.consultarMovSaidaPeloIdMovSaida(req.params.idmovsaida)
+            let resp = await app.DAO.movSaidaDAO.consultarMovSaidaPeloIdSalario(req.params.idsalario)
             res.status(200).send({msg: "Movimento de saída consultadas com sucesso", resp: resp})
         }catch(err){
             res.status(404).send({msg: "Erro ao consultar movimentos de saída", resp: err})
