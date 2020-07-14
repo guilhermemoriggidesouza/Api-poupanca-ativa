@@ -80,6 +80,14 @@ module.exports = {
                 idsalario_vem: idsalario
             }
         })
+    },
+
+    async recuperarSalariosDescricao(idsalario){
+        return await models.salario_descricao.findAll({
+            where:{
+                idsalario: idsalario
+            }
+        })
     }
 
 }

@@ -1,3 +1,5 @@
+const { recuperarSalariosDescricao } = require("../DAO/salarioDAO")
+
 module.exports = {
     async consultarTodosOsSalariosPeloLogin(req, res, app){
         try{
@@ -142,9 +144,18 @@ module.exports = {
     async criarSessaoDoSalario(req, res, app){
         try{
             const salarioRecuperadoId = await app.DAO.salarioDAO.consultarSalarioPeloId(req.params.idsalario)
-            res.status(200).send(salarioRecuperadoId)
+            res.status(200).send({msg: "salario recuperado com sucesso", resp: salarioRecuperadoId})
         }catch(err){
-            res.status(404).send(salarioRecuperadoId)
+            res.status(404).send({msg: "erro ao recuperar salario", resp: err})
+        }
+    },
+    
+    async recuperarSalariosDescricao(req, res, app){
+        try{
+            const salariosDescricao = await app.DAO.salarioDAO.recuperarSalariosDescricao(req.params.idsalario)
+            res.status(200).send({msg: "salarios descricaos recuperados com sucesso", resp: salariosDescricao})
+        }catch(err){
+            res.status(404).send({msg: "erro ao recuperar salarios descricaos", resp: err})
         }
     }
 }

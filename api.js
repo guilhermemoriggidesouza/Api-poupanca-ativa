@@ -54,6 +54,12 @@ module.exports = function(app){
         (req, res) => app.controller.salario.criarSessaoDoSalario(req, res, app)
     )
 
+    app.get(
+        '/salarioDescricao/:idsalario', 
+        validator.params(app.validator.paramsIdSalario), 
+        (req, res) => app.controller.salario.recuperarSalariosDescricao(req, res, app)
+    )
+
 
 
     app.put(
